@@ -7,3 +7,6 @@ edition = "2021"
 
 [dependencies]
 tuple-space = {git = "ssh://misc.aimred.com/var/local/git/TupleSpace/tuple-space"}
+tokio = { version = "1", features = ["full"] }
+warp = "0.3"
+serde = "1.0"
