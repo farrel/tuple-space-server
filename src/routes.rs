@@ -1,8 +1,6 @@
-use crate::command_result::CommandResult;
 use crate::handlers;
 use crate::types::CommandSend;
 use std::convert::Infallible;
-use tuple_space::tuple::Tuple;
 use warp::Filter;
 
 fn with_command_tx(
