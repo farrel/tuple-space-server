@@ -44,5 +44,5 @@ pub(crate) fn tuple_routes(
 ) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
     write_tuple(command_tx.clone())
         .or(read_tuple(command_tx.clone()))
-        .or(take_tuple(command_tx.clone()))
+        .or(take_tuple(command_tx))
 }
