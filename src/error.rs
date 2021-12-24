@@ -1,9 +1,7 @@
-use serde::Serialize;
-
 #[derive(Debug)]
 pub enum Error {
     TupleSpace(tuple_space::error::Error),
-    OneShotRecv,
+    OneShotRecv(tokio::sync::oneshot::error::RecvError),
     ConfigEmpty,
     TomlDe(toml::de::Error),
     Io(std::io::Error),
@@ -16,8 +14,8 @@ impl From<tuple_space::error::Error> for Error {
 }
 
 impl From<tokio::sync::oneshot::error::RecvError> for Error {
-    fn from(_error: tokio::sync::oneshot::error::RecvError) -> Self {
-        Error::OneShotRecv
+    fn from(error: tokio::sync::oneshot::error::RecvError) -> Self {
+        Error::OneShotRecv(error)
     }
 }
 

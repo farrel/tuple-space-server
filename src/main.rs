@@ -11,7 +11,7 @@ mod types;
 use crate::command::Command;
 use crate::command_result::CommandResult;
 use crate::config::Config;
-use log::{debug, error, info};
+use log::{debug, info};
 use tokio::sync::{mpsc, oneshot};
 
 #[tokio::main]
