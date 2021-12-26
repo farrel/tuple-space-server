@@ -3,6 +3,10 @@ use crate::types::CommandSend;
 use std::convert::Infallible;
 use warp::Filter;
 
+const WRITE_PATH: &str = "write";
+const READ_PATH: &str = "read";
+const TAKE_PATH: &str = "take";
+
 fn with_command_tx(
     command_tx: CommandSend,
 ) -> impl Filter<Extract = (CommandSend,), Error = Infallible> + Clone {
@@ -12,7 +16,7 @@ fn with_command_tx(
 fn write(
     command_tx: CommandSend,
 ) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
-    warp::path("write_tuple")
+    warp::path(WRITE_PATH)
         .and(warp::post())
         .and(warp::body::json())
         .and(with_command_tx(command_tx))
@@ -22,7 +26,7 @@ fn write(
 fn read(
     command_tx: CommandSend,
 ) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
-    warp::path("read_tuple")
+    warp::path(READ_PATH)
         .and(warp::post())
         .and(warp::body::json())
         .and(with_command_tx(command_tx))
@@ -32,7 +36,7 @@ fn read(
 fn take(
     command_tx: CommandSend,
 ) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
-    warp::path("take_tuple")
+    warp::path(TAKE_PATH)
         .and(warp::post())
         .and(warp::body::json())
         .and(with_command_tx(command_tx))
