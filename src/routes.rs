@@ -9,40 +9,40 @@ fn with_command_tx(
     warp::any().map(move || command_tx.clone())
 }
 
-fn write_tuple(
+fn write(
     command_tx: CommandSend,
 ) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
     warp::path("write_tuple")
         .and(warp::post())
         .and(warp::body::json())
         .and(with_command_tx(command_tx))
-        .and_then(handlers::write_tuple)
+        .and_then(handlers::write)
 }
 
-fn read_tuple(
+fn read(
     command_tx: CommandSend,
 ) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
     warp::path("read_tuple")
         .and(warp::post())
         .and(warp::body::json())
         .and(with_command_tx(command_tx))
-        .and_then(handlers::read_tuple)
+        .and_then(handlers::read)
 }
 
-fn take_tuple(
+fn take(
     command_tx: CommandSend,
 ) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
     warp::path("take_tuple")
         .and(warp::post())
         .and(warp::body::json())
         .and(with_command_tx(command_tx))
-        .and_then(handlers::take_tuple)
+        .and_then(handlers::take)
 }
 
 pub(crate) fn tuple_routes(
     command_tx: CommandSend,
 ) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
-    write_tuple(command_tx.clone())
-        .or(read_tuple(command_tx.clone()))
-        .or(take_tuple(command_tx))
+    write(command_tx.clone())
+        .or(read(command_tx.clone()))
+        .or(take(command_tx))
 }

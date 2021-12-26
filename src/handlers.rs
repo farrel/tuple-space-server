@@ -40,7 +40,7 @@ pub(crate) fn spawn_tuple_space_handler(
     })
 }
 
-pub(crate) async fn write_tuple(
+pub(crate) async fn write(
     tuple: Tuple,
     command_tx: CommandSend,
 ) -> std::result::Result<impl warp::Reply, Infallible> {
@@ -62,7 +62,7 @@ pub(crate) async fn write_tuple(
     }
 }
 
-pub(crate) async fn read_tuple(
+pub(crate) async fn read(
     tuple: Tuple,
     command_tx: CommandSend,
 ) -> std::result::Result<Box<dyn warp::Reply>, Infallible> {
@@ -88,7 +88,7 @@ pub(crate) async fn read_tuple(
     }
 }
 
-pub(crate) async fn take_tuple(
+pub(crate) async fn take(
     tuple: Tuple,
     command_tx: CommandSend,
 ) -> std::result::Result<Box<dyn warp::Reply>, Infallible> {
