@@ -4,6 +4,20 @@
 
 A tuple space is a method for coordinating data between different processes in an asynchronous manner. Processes write tuples of data to the tuple space and then read or remove data from the tuple space using a tuple as template to match against.
 
+This server is base on the [tuple-space](https://github.com/farrel/tuple-space) crate. The corresponding [tuple-space-client](https://github.com/farrel/tuple-space-client) crate can be used to communicate with the server from a Rust program.
+
+## Building the server
+
+The server is written in Rust, so building it requires a Rust compiler. Use the cargo build manager (installed as part of Rust) to build the executable.
+
+    % cargo build --release
+
+## Running the server
+
+The server can be started from the comand line passing in the path of the configuration file.
+
+    % ./target/release/tuple-space-server --config-file tuple_space_server.toml
+
 ## Configuration
 
 The configuration of the server is set by a .toml file with the following values set
@@ -11,17 +25,9 @@ The configuration of the server is set by a .toml file with the following values
     ip_address = "0.0.0.0"
     port = 8000
 
-## Running the server
-
-The server can be started from the comand line passing in the path of the configuration file.
-
-    % ./target/release/tuple-space-server --config tmp/tuple_space_server.toml
-
+## 
 
 ## License - 3-Clause BSD License
-T
-    ip_address = "0.0.0.0"
-    port = 8000
 
 Copyright 2021 Farrel Lifson
 
