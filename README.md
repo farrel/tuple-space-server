@@ -25,9 +25,7 @@ The configuration of the server is set by a .toml file with the following values
     ip_address = "0.0.0.0"
     port = 8000
 
-## 
-
-## License - 3-Clause BSD License
+## License (3-Clause BSD License)
 
 Copyright 2021 Farrel Lifson
 
