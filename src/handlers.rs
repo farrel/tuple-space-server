@@ -48,8 +48,11 @@ pub(crate) async fn write(
     let (response_tx, response_rx) = oneshot::channel();
     match command_tx.send((Command::Write(tuple), response_tx)).await {
         Ok(_) => (),
-        Err(_) => return Ok(StatusCode::INTERNAL_SERVER_ERROR),
-    };
+        Err(error) => {
+            error!("Tuple Space error {:?}", error);
+            return Ok(StatusCode::INTERNAL_SERVER_ERROR);
+        }
+    }
     match response_rx.await {
         Ok(CommandResult::WriteOk) => {
             info!("Write success");
@@ -70,8 +73,11 @@ pub(crate) async fn read(
     let (response_tx, response_rx) = oneshot::channel();
     match command_tx.send((Command::Read(tuple), response_tx)).await {
         Ok(_) => (),
-        Err(_) => return Ok(Box::new(StatusCode::INTERNAL_SERVER_ERROR)),
-    };
+        Err(error) => {
+            error!("Tuple Space error {:?}", error);
+            return Ok(Box::new(StatusCode::INTERNAL_SERVER_ERROR));
+        }
+    }
     match response_rx.await {
         Ok(CommandResult::ReadOk(Some(tuple))) => {
             info!("Tuple found");
@@ -96,7 +102,10 @@ pub(crate) async fn take(
     let (response_tx, response_rx) = oneshot::channel();
     match command_tx.send((Command::Take(tuple), response_tx)).await {
         Ok(_) => (),
-        Err(_) => return Ok(Box::new(StatusCode::INTERNAL_SERVER_ERROR)),
+        Err(error) => {
+            error!("Tuple Space error {:?}", error);
+            return Ok(Box::new(StatusCode::INTERNAL_SERVER_ERROR));
+        }
     }
     match response_rx.await {
         Ok(CommandResult::TakeOk(Some(tuple))) => {
