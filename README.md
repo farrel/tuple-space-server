@@ -14,7 +14,9 @@ The server is written in Rust, so building it requires a Rust compiler. Use the 
 
 The server can be started from the comand line, passing in the path of the configuration file.
 
-    % ./target/release/tuple-space-server --config-file tuple_space_server.toml
+```zsh
+% ./target/release/tuple-space-server --config-file tuple_space_server.toml
+```
 
 ## Configuration
 
