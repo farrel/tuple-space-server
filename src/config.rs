@@ -7,6 +7,7 @@ use serde::Deserialize;
 pub(crate) struct Config {
     pub ip_address: std::net::IpAddr,
     pub port: u16,
+    pub queue_size: usize,
 }
 
 impl Config {

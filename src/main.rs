@@ -8,16 +8,18 @@ mod result;
 mod routes;
 mod types;
 
-use crate::command::Command;
-use crate::command_result::CommandResult;
 use crate::config::Config;
+use crate::types::CommandPayload;
 use log::{debug, info};
-use tokio::sync::{mpsc, oneshot};
+use tokio::sync::mpsc;
 
 #[tokio::main]
 async fn run(config: Config) {
-    let (command_tx, command_rx) = mpsc::channel::<(Command, oneshot::Sender<CommandResult>)>(100);
-    debug!("Command channels initialised");
+    let (command_tx, command_rx) = mpsc::channel::<CommandPayload>(config.queue_size);
+    debug!(
+        "Command channels initialised with queue size {}",
+        config.queue_size
+    );
     handlers::spawn_tuple_space_handler(command_rx);
     debug!("Tuple space handler spawned");
     let tuple_routes = routes::tuple_routes(command_tx);

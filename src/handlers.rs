@@ -34,7 +34,7 @@ pub(crate) fn spawn_tuple_space_handler(
             debug!("CommandResult {:?}", command_result);
             match response.send(command_result) {
                 Ok(()) => debug!("CommandResult sent"),
-                Err(_command_result) => error!("Could not send CommandResult"),
+                Err(command_result) => error!("Could not send CommandResult {:?}", command_result),
             }
         }
     })
