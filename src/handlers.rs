@@ -13,22 +13,26 @@ pub(crate) fn spawn_tuple_space_handler(
     mut command_rx: CommandReceive,
 ) -> tokio::task::JoinHandle<()> {
     tokio::spawn(async move {
-        let mut tuple_space = VecStore::default();
+        let mut tuple_store = VecStore::default();
 
         while let Some((command, response)) = command_rx.recv().await {
             debug!("Command {:?} received", command);
             let command_result = match command {
-                Command::Write(tuple) => match tuple_space.write(&tuple) {
+                Command::Size => match tuple_store.size() {
+                    Ok(size) => CommandResult::SizeOk(size),
+                    Err(error) => CommandResult::Error(error.into()),
+                },
+                Command::Write(tuple) => match tuple_store.write(&tuple) {
                     Ok(()) => CommandResult::WriteOk,
-                    Err(error) => CommandResult::WriteError(error.into()),
+                    Err(error) => CommandResult::Error(error.into()),
                 },
-                Command::Read(template) => match tuple_space.read(&template) {
+                Command::Read(template) => match tuple_store.read(&template) {
                     Ok(tuple_option) => CommandResult::ReadOk(tuple_option),
-                    Err(error) => CommandResult::ReadError(error.into()),
+                    Err(error) => CommandResult::Error(error.into()),
                 },
-                Command::Take(template) => match tuple_space.take(&template) {
+                Command::Take(template) => match tuple_store.take(&template) {
                     Ok(tuple_option) => CommandResult::TakeOk(tuple_option),
-                    Err(error) => CommandResult::TakeError(error.into()),
+                    Err(error) => CommandResult::Error(error.into()),
                 },
             };
             debug!("CommandResult {:?}", command_result);
@@ -38,6 +42,36 @@ pub(crate) fn spawn_tuple_space_handler(
             }
         }
     })
+}
+
+pub(crate) async fn size(
+    command_tx: CommandSend,
+) -> std::result::Result<Box<dyn warp::Reply>, Infallible> {
+    info!("Size");
+    let (response_tx, response_rx) = oneshot::channel();
+
+    match command_tx.send((Command::Size, response_tx)).await {
+        Ok(_) => (),
+        Err(error) => {
+            error!("Tuple Space error {:?}", error);
+            return Ok(Box::new(StatusCode::INTERNAL_SERVER_ERROR));
+        }
+    }
+
+    match response_rx.await {
+        Ok(CommandResult::SizeOk(size)) => {
+            info!("Size success");
+            Ok(Box::new(warp::reply::json(&size)))
+        }
+        Err(error) => {
+            error!("Error: {:?}", error);
+            Ok(Box::new(StatusCode::INTERNAL_SERVER_ERROR))
+        }
+        unexpected => {
+            error!("Unexpected response: {:?}", unexpected);
+            Ok(Box::new(StatusCode::INTERNAL_SERVER_ERROR))
+        }
+    }
 }
 
 pub(crate) async fn write(
@@ -58,8 +92,12 @@ pub(crate) async fn write(
             info!("Write success");
             Ok(StatusCode::CREATED)
         }
-        error => {
-            error!("Unexpected response: {:?}", error);
+        Err(error) => {
+            error!("Error: {:?}", error);
+            Ok(StatusCode::INTERNAL_SERVER_ERROR)
+        }
+        unexpected => {
+            error!("Unexpected response: {:?}", unexpected);
             Ok(StatusCode::INTERNAL_SERVER_ERROR)
         }
     }
@@ -87,8 +125,12 @@ pub(crate) async fn read(
             info!("Tuple not found");
             Ok(Box::new(StatusCode::NOT_FOUND))
         }
-        error => {
-            error!("Unexpected response: {:?}", error);
+        Err(error) => {
+            error!("Error: {:?}", error);
+            Ok(Box::new(StatusCode::INTERNAL_SERVER_ERROR))
+        }
+        unexpected => {
+            error!("Unexpected response: {:?}", unexpected);
             Ok(Box::new(StatusCode::INTERNAL_SERVER_ERROR))
         }
     }
@@ -116,8 +158,12 @@ pub(crate) async fn take(
             info!("Tuple not found");
             Ok(Box::new(StatusCode::NOT_FOUND))
         }
-        error => {
-            error!("Unexpected response: {:?}", error);
+        Err(error) => {
+            error!("Error: {:?}", error);
+            Ok(Box::new(StatusCode::INTERNAL_SERVER_ERROR))
+        }
+        unexpected => {
+            error!("Unexpected response: {:?}", unexpected);
             Ok(Box::new(StatusCode::INTERNAL_SERVER_ERROR))
         }
     }

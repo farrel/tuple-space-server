@@ -1000,7 +1000,7 @@ dependencies = [
 [[package]]
 name = "tuple-space"
 version = "0.1.0"
-source = "git+ssh://misc.aimred.com/var/local/git/TupleSpace/tuple-space#0445968d16dd4bb64f19f58dd5465d859c2d6b12"
+source = "git+ssh://misc.aimred.com/var/local/git/TupleSpace/tuple-space#efdd39e0361e8d87650a64b4e4f10906e12c4633"
 dependencies = [
  "log",
  "serde",
@@ -1097,9 +1097,9 @@ checksum = "f1bddf1187be692e79c5ffeab891132dfb0f236ed36a43c7ed39f1165ee20191"
 
 [[package]]
 name = "version_check"
-version = "0.9.3"
+version = "0.9.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5fecdca9a5291cc2b8dcf7dc02453fee791a280f3743cb0905f8822ae463b3fe"
+checksum = "49874b5167b65d7193b8aba1567f5c7d93d001cafc34600cee003eda787e483f"
 
 [[package]]
 name = "want"
