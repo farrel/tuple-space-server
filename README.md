@@ -2,11 +2,15 @@
 
 ## What is a Tuple Space
 
-A tuple space is a method for coordinating data between different processes in an asynchronous manner. Processes write tuples of data to the tuple space and then read or remove data from the tuple space using a tuple as template to match against.
+A Tuple Space is a method for coordinating data between different processes in an asynchronous manner. Processes write tuples of data to the Tuple Space and then read or remove data from the Tuple Space using a tuple as template to match against.
 
 This server is based on the [tuple-space](https://github.com/farrel/tuple-space) crate. The corresponding [tuple-space-client](https://github.com/farrel/tuple-space-client) crate can be used to communicate with the server from a Rust program.
 
 ## Building and running the server
+
+The source code of the tuple-space-server can be obtained from it's Github repository. 
+
+    % git clone https://github.com/farrel/tuple-space-server.git
 
 The server is written in Rust, so building it requires a Rust compiler. Use the cargo build manager (installed as part of Rust) to build the executable.
 
