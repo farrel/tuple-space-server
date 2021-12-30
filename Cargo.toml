@@ -6,7 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-tuple-space = {git = "ssh://misc.aimred.com/var/local/git/TupleSpace/tuple-space"}
+tuple-space = {git = "https://github.com/farrel/tuple-space.git"}
 tokio = { version = "1", features = ["full"] }
 warp = "0.3"
 serde = "1.0"

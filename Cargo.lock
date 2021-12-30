@@ -570,9 +570,9 @@ checksum = "8b870d8c151b6f2fb93e84a13146138f05d02ed11c7e7c54f8826aaaf7c9f184"
 
 [[package]]
 name = "ppv-lite86"
-version = "0.2.15"
+version = "0.2.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ed0cfbc8191465bed66e1718596ee0b0b35d5ee1f41c5df2189d0fe8bde535ba"
+checksum = "eb9f9e6e233e5c4a35559a617bf40a4ec447db2e84c20b55a6f83167b7e57872"
 
 [[package]]
 name = "proc-macro2"
@@ -1000,7 +1000,7 @@ dependencies = [
 [[package]]
 name = "tuple-space"
 version = "0.1.0"
-source = "git+ssh://misc.aimred.com/var/local/git/TupleSpace/tuple-space#efdd39e0361e8d87650a64b4e4f10906e12c4633"
+source = "git+https://github.com/farrel/tuple-space.git#4cc080f6af8d9d9b727bb5904fa4b8d3b05bf2b7"
 dependencies = [
  "log",
  "serde",
