@@ -1000,7 +1000,7 @@ dependencies = [
 [[package]]
 name = "tuple-space"
 version = "0.1.0"
-source = "git+https://github.com/farrel/tuple-space.git#4cc080f6af8d9d9b727bb5904fa4b8d3b05bf2b7"
+source = "git+https://github.com/farrel/tuple-space.git#bfb38aaaf98cca36e9e775f89c01787b300e311a"
 dependencies = [
  "log",
  "serde",
