@@ -1,4 +1,4 @@
-# tuple-space-server - An HTTP based Tuple Space server
+# tuple-space-server - HTTP based Tuple Space server
 
 ## What is a Tuple Space
 
@@ -8,12 +8,10 @@ This server is based on the [tuple-space](https://github.com/farrel/tuple-space)
 
 ## Building and running the server
 
-The source code of the tuple-space-server can be obtained from it's Github repository. 
+The source code of the tuple-space-server can be obtained from it's Github repository. The server is written in Rust, so building it requires a Rust compiler. Use the cargo build manager (installed as part of Rust) to build the executable.
 
     % git clone https://github.com/farrel/tuple-space-server.git
-
-The server is written in Rust, so building it requires a Rust compiler. Use the cargo build manager (installed as part of Rust) to build the executable.
-
+    % cd tuple-space-server
     % cargo build --release
 
 The server can be started from the comand line, passing in the path of the configuration file.
