@@ -34,7 +34,7 @@ fn main() -> crate::result::Result<()> {
     info!("Starting..");
 
     let cli_args = crate::cli::parse_args();
-    let config_file_arg = cli_args.value_of("config-file");
+    let config_file_arg = cli_args.value_of(crate::cli::CONFIG_FILE);
 
     let config = Config::load_configuration(config_file_arg)?;
     run(config);

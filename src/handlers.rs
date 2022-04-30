@@ -4,6 +4,7 @@ use crate::types::{CommandReceive, CommandSend};
 use log::{debug, error, info};
 use std::convert::Infallible;
 use tokio::sync::oneshot;
+use tuple_space::query_tuple::QueryTuple;
 use tuple_space::store::Store;
 use tuple_space::tuple::Tuple;
 use tuple_space::vec_store::VecStore;
@@ -26,11 +27,11 @@ pub(crate) fn spawn_tuple_space_handler(
                     Ok(()) => CommandResult::WriteOk,
                     Err(error) => CommandResult::Error(error.into()),
                 },
-                Command::Read(template) => match tuple_store.read(&template) {
+                Command::Read(query_tuple) => match tuple_store.read(&query_tuple) {
                     Ok(tuple_option) => CommandResult::ReadOk(tuple_option),
                     Err(error) => CommandResult::Error(error.into()),
                 },
-                Command::Take(template) => match tuple_store.take(&template) {
+                Command::Take(query_tuple) => match tuple_store.take(&query_tuple) {
                     Ok(tuple_option) => CommandResult::TakeOk(tuple_option),
                     Err(error) => CommandResult::Error(error.into()),
                 },
@@ -104,12 +105,14 @@ pub(crate) async fn write(
 }
 
 pub(crate) async fn read(
-    tuple: Tuple,
+    query_tuple: QueryTuple,
     command_tx: CommandSend,
 ) -> std::result::Result<Box<dyn warp::Reply>, Infallible> {
-    info!("Read {}", tuple);
     let (response_tx, response_rx) = oneshot::channel();
-    match command_tx.send((Command::Read(tuple), response_tx)).await {
+    match command_tx
+        .send((Command::Read(query_tuple), response_tx))
+        .await
+    {
         Ok(_) => (),
         Err(error) => {
             error!("Tuple Space error {:?}", error);
@@ -137,12 +140,14 @@ pub(crate) async fn read(
 }
 
 pub(crate) async fn take(
-    tuple: Tuple,
+    query_tuple: QueryTuple,
     command_tx: CommandSend,
 ) -> std::result::Result<Box<dyn warp::Reply>, Infallible> {
-    info!("Take {}", tuple);
     let (response_tx, response_rx) = oneshot::channel();
-    match command_tx.send((Command::Take(tuple), response_tx)).await {
+    match command_tx
+        .send((Command::Take(query_tuple), response_tx))
+        .await
+    {
         Ok(_) => (),
         Err(error) => {
             error!("Tuple Space error {:?}", error);
