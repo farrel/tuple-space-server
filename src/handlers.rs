@@ -20,19 +20,19 @@ pub(crate) fn spawn_tuple_space_handler(
             debug!("Command {:?} received", command);
             let command_result = match command {
                 Command::Size => match tuple_store.size() {
-                    Ok(size) => CommandResult::SizeOk(size),
+                    Ok(size) => CommandResult::Size(size),
                     Err(error) => CommandResult::Error(error.into()),
                 },
                 Command::Write(tuple) => match tuple_store.write(&tuple) {
-                    Ok(()) => CommandResult::WriteOk,
+                    Ok(()) => CommandResult::Write,
                     Err(error) => CommandResult::Error(error.into()),
                 },
                 Command::Read(query_tuple) => match tuple_store.read(&query_tuple) {
-                    Ok(tuple_option) => CommandResult::ReadOk(tuple_option),
+                    Ok(tuple_option) => CommandResult::Read(tuple_option),
                     Err(error) => CommandResult::Error(error.into()),
                 },
                 Command::Take(query_tuple) => match tuple_store.take(&query_tuple) {
-                    Ok(tuple_option) => CommandResult::TakeOk(tuple_option),
+                    Ok(tuple_option) => CommandResult::Take(tuple_option),
                     Err(error) => CommandResult::Error(error.into()),
                 },
             };
@@ -60,7 +60,7 @@ pub(crate) async fn size(
     }
 
     match response_rx.await {
-        Ok(CommandResult::SizeOk(size)) => {
+        Ok(CommandResult::Size(size)) => {
             info!("Size success");
             Ok(Box::new(warp::reply::json(&size)))
         }
@@ -89,7 +89,7 @@ pub(crate) async fn write(
         }
     }
     match response_rx.await {
-        Ok(CommandResult::WriteOk) => {
+        Ok(CommandResult::Write) => {
             info!("Write success");
             Ok(StatusCode::CREATED)
         }
@@ -120,11 +120,11 @@ pub(crate) async fn read(
         }
     }
     match response_rx.await {
-        Ok(CommandResult::ReadOk(Some(tuple))) => {
+        Ok(CommandResult::Read(Some(tuple))) => {
             info!("Tuple found");
             Ok(Box::new(warp::reply::json(&tuple)))
         }
-        Ok(CommandResult::ReadOk(None)) => {
+        Ok(CommandResult::Read(None)) => {
             info!("Tuple not found");
             Ok(Box::new(StatusCode::NOT_FOUND))
         }
@@ -155,11 +155,11 @@ pub(crate) async fn take(
         }
     }
     match response_rx.await {
-        Ok(CommandResult::TakeOk(Some(tuple))) => {
+        Ok(CommandResult::Take(Some(tuple))) => {
             info!("Tuple found");
             Ok(Box::new(warp::reply::json(&tuple)))
         }
-        Ok(CommandResult::TakeOk(None)) => {
+        Ok(CommandResult::Take(None)) => {
             info!("Tuple not found");
             Ok(Box::new(StatusCode::NOT_FOUND))
         }
